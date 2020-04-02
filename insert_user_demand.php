@@ -4,10 +4,7 @@
 -->
 
 <?php
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "covid19";
+include('dbconfig.php');
 
 
 if(isset($_POST['envoyer'])){
