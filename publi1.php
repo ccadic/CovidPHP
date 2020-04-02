@@ -4,10 +4,7 @@
 
 <?php
 // On interroge la base de donnes pour construire le tableau
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "covid19";
+include('dbconfig.php');
 
 $contenu="";
 
@@ -26,9 +23,14 @@ die("Connection failed: " . mysqli_connect_error());
 }
 
 // SELECT les annonces des recherches postees par les Etablissement SELECT * FROM `usagers`
-$sql = "SELECT id_demandeur,etablissement,nom,prenom,email,telephone,adresse,zip,ville,annonce FROM usagers where id_demandeur=$ID";
+//$sql = "SELECT id_demandeur,etablissement,nom,prenom,email,telephone,adresse,zip,ville,annonce FROM usagers where id_demandeur=$ID";
 //print $sql;
-$result = $conn->query($sql);
+//$result = $conn->query($sql);
+$stmt = $conn->prepare('SELECT id_demandeur,etablissement,nom,prenom,email,telephone,adresse,zip,ville,annonce FROM usagers where id_demandeur= ?');
+$stmt->bind_param('i', $ID);
+$stmt->execute();
+$result = $stmt->get_result();
+
 
 $rech1=" <br>
 <table class=\"table table-striped\">
@@ -46,9 +48,9 @@ if ($result->num_rows > 0) {
     // output data of each row
     while($row = $result->fetch_assoc()) {
         $rech1 = $rech1. "<tr>
-           <td><b>". $row["etablissement"]."</b><br>". $row["adresse"]."<br>". $row["zip"]." ". $row["ville"]."<br></td>
-           <td><b>". $row["nom"]." ". $row["prenom"]."</b><br>". $row["telephone"]."<br>". $row["email"]."<br></td>
-           <td><p class=\"text-center\">". $row["id_demandeur"]."</p></td>
+           <td><b>". htmlspecialchars($row["etablissement"])."</b><br>". htmlspecialchars($row["adresse"])."<br>". htmlspecialchars($row["zip"])." ". htmlspecialchars($row["ville"])."<br></td>
+           <td><b>". htmlspecialchars($row["nom"])." ". htmlspecialchars($row["prenom"])."</b><br>". htmlspecialchars($row["telephone"])."<br>". $row["email"]."<br></td>
+           <td><p class=\"text-center\">". htmlspecialchars($row["id_demandeur"])."</p></td>
             <td></td>
          </tr>
          <tr>
@@ -60,7 +62,7 @@ if ($result->num_rows > 0) {
 
 
          ";
-         $contenu=$row["annonce"];
+         $contenu=htmlspecialchars($row["annonce"]);
 
 
     }

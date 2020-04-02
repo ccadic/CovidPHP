@@ -4,10 +4,7 @@
 
 <?php
 // On interroge la base de donnes pour construire le tableau
-$servername = "localhost";
-$username = "root";
-$password = "";
-$dbname = "covid19";
+include('dbconfig.php');
 
 // Insert into MSQL table
 $conn=mysqli_connect($servername,$username,$password,$dbname);
@@ -85,10 +82,10 @@ $rech1=$rech1."
        // output data of each row
        while($row = $result2->fetch_assoc()) {
            $rech2 = $rech2. "<tr>
-              <td>". $row["zip"]."</td>
-              <td>". $row["ville"]."</td>
-              <td>". $row["annonce"]."</td>
-              <td> <a href=\"publi2.php?ID=". $row["id_demandeur"]."\" data-toggle=\"tooltip\" target=\"_new\"><button type=\"button\" class=\"btn btn-info\" title=\"Prénom: ". $row["prenom"]."\nEmail:".$row["email"]."\">Détail Offre</button></a></td>
+              <td>". htmlspecialchars($row["zip"])."</td>
+              <td>". htmlspecialchars($row["ville"])."</td>
+              <td>". htmlspecialchars($row["annonce"])."</td>
+              <td> <a href=\"publi2.php?ID=". htmlspecialchars($row["id_demandeur"])."\" data-toggle=\"tooltip\" target=\"_new\"><button type=\"button\" class=\"btn btn-info\" title=\"Prénom: ". htmlspecialchars($row["prenom"])."\nEmail:".htmlspecialchars($row["email"])."\">Détail Offre</button></a></td>
             </tr>";
 
 
